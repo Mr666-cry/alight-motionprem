@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/send-link",
+      "dest": "/api/send-link.js"
+    },
+    {
+      "src": "/api/verify-link",
+      "dest": "/api/verify-link.js"
+    }
+  ]
+}
