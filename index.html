@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM Premium Injector - SamuDev</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(18, 24, 38, 0.75);
+            --accent-color: #00f2fe;
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --error-color: #ff4b4b;
+            --success-color: #00e676;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(79, 172, 254, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.15) 0%, transparent 40%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .header i {
+            font-size: 2.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-sub);
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 16px;
+            color: var(--text-sub);
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-box input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: var(--accent-gradient);
+            color: #000;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-error {
+            background: rgba(255, 75, 75, 0.15);
+            border: 1px solid var(--error-color);
+            color: #ff8e8e;
+        }
+
+        .alert-success {
+            background: rgba(0, 230, 118, 0.15);
+            border: 1px solid var(--success-color);
+            color: #69f0ae;
+        }
+
+        .result-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .result-item:last-child {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .result-key { color: var(--text-sub); }
+        .result-val { font-weight: 600; color: var(--accent-color); }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0,0,0,0.3);
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <i class="fa-solid fa-bolt"></i>
+            <h1>AM Premium Injector</h1>
+            <p>Aktifkan akun Alight Motion Premium dengan cepat</p>
+        </div>
+
+        <div class="step-indicator">
+            <div class="step active" id="step1-tab">1. Kirim Link</div>
+            <div class="step" id="step2-tab">2. Verifikasi</div>
+        </div>
+
+        <!-- Alert Notification -->
+        <div id="alertBox" class="alert hidden">
+            <i class="fa-solid fa-circle-info" id="alertIcon"></i>
+            <span id="alertMessage"></span>
+        </div>
+
+        <!-- STEP 1: Email Form -->
+        <form id="step1Form">
+            <div class="form-group">
+                <label for="email">Alamat Email AM</label>
+                <div class="input-box">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" id="email" placeholder="contoh@gmail.com" required autocomplete="off">
+                </div>
+            </div>
+            <button type="submit" class="btn" id="btnStep1">
+                <span>Kirim Magic Link</span>
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+
+        <!-- STEP 2: Magic Link Form -->
+        <form id="step2Form" class="hidden">
+            <div class="form-group">
+                <label for="magicLink">Magic Link dari Email</label>
+                <div class="input-box">
+                    <i class="fa-solid fa-link"></i>
+                    <input type="url" id="magicLink" placeholder="Paste link dari email di sini..." required autocomplete="off">
+                </div>
+            </div>
+            <button type="submit" class="btn" id="btnStep2">
+                <span>Verifikasi Akun</span>
+                <i class="fa-solid fa-shield-halved"></i>
+            </button>
+        </form>
+
+        <!-- RESULT UI -->
+        <div id="resultBox" class="result-card hidden">
+            <div class="result-item">
+                <span class="result-key">Status:</span>
+                <span class="result-val" style="color: var(--success-color);">Sukses Berhasil!</span>
+            </div>
+            <div class="result-item">
+                <span class="result-key">Email:</span>
+                <span class="result-val" id="resEmail">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-key">User ID:</span>
+                <span class="result-val" id="resUserId">-</span>
+            </div>
+            <button class="btn" style="margin-top: 15px;" onclick="location.reload()">Proses Email Lain</button>
+        </div>
+
+        <div class="footer">
+            Powered by SamuDev &copy; 2026
+        </div>
+    </div>
+
+    <script>
+        let globalEmail = '';
+        let globalSessionCookie = '';
+
+        const step1Form = document.getElementById('step1Form');
+        const step2Form = document.getElementById('step2Form');
+        const alertBox = document.getElementById('alertBox');
+        const alertMessage = document.getElementById('alertMessage');
+        const resultBox = document.getElementById('resultBox');
+
+        function showAlert(msg, type = 'error') {
+            alertBox.className = `alert alert-${type}`;
+            alertMessage.innerText = msg;
+            alertBox.classList.remove('hidden');
+        }
+
+        function hideAlert() {
+            alertBox.classList.add('hidden');
+        }
+
+        function setLoading(btn, isLoading, text) {
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = `<div class="spinner"></div> <span>Processing...</span>`;
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = text;
+            }
+        }
+
+        // STEP 1: Kirim Link ke Email
+        step1Form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAlert();
+
+            const emailInput = document.getElementById('email').value.trim();
+            const btnStep1 = document.getElementById('btnStep1');
+
+            setLoading(btnStep1, true);
+
+            try {
+                // Direct call relative path /api/send-link
+                const response = await fetch('/api/send-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Gagal mengirim link verifikasi.');
+                }
+
+                globalEmail = emailInput;
+                globalSessionCookie = data.sessionCookie;
+
+                showAlert('Magic link terkirim! Silakan cek kotak masuk email kamu.', 'success');
+
+                step1Form.classList.add('hidden');
+                step2Form.classList.remove('hidden');
+                document.getElementById('step1-tab').classList.remove('active');
+                document.getElementById('step2-tab').classList.add('active');
+
+            } catch (err) {
+                showAlert(err.message, 'error');
+            } finally {
+                setLoading(btnStep1, false, `<span>Kirim Magic Link</span> <i class="fa-solid fa-paper-plane"></i>`);
+            }
+        });
+
+        // STEP 2: Verifikasi Magic Link
+        step2Form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAlert();
+
+            const magicLinkInput = document.getElementById('magicLink').value.trim();
+            const btnStep2 = document.getElementById('btnStep2');
+
+            setLoading(btnStep2, true);
+
+            try {
+                // Direct call relative path /api/verify-link
+                const response = await fetch('/api/verify-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: globalEmail,
+                        link: magicLinkInput,
+                        sessionCookie: globalSessionCookie
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Verifikasi gagal.');
+                }
+
+                step2Form.classList.add('hidden');
+                document.getElementById('step2-tab').classList.remove('active');
+                
+                document.getElementById('resEmail').innerText = globalEmail;
+                document.getElementById('resUserId').innerText = data.userData?.id || 'Active User';
+                resultBox.classList.remove('hidden');
+
+                showAlert('Selamat! Akun berhasil diverifikasi.', 'success');
+
+            } catch (err) {
+                showAlert(err.message, 'error');
+            } finally {
+                setLoading(btnStep2, false, `<span>Verifikasi Akun</span> <i class="fa-solid fa-shield-halved"></i>`);
+            }
+        });
+    </script>
+</body>
+</html>
